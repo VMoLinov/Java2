@@ -8,14 +8,8 @@ public class Main {
         Obstacles[] obstacles = addObstacles();
 
         for (Obstacles obstacle : obstacles) {
-            if (obstacle instanceof Track) {
-                for (Sportsmen participant : participants) {
-                    participant.run(obstacle.getValue());
-                }
-            } else if (obstacle instanceof Barrier) {
-                for (Sportsmen participant : participants) {
-                    participant.jump(obstacle.getValue());
-                }
+            for (Sportsmen participant : participants) {
+                obstacle.attempt(participant);
             }
         }
 

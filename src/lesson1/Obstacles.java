@@ -2,14 +2,14 @@ package lesson1;
 
 public abstract class Obstacles {
 
-    private final int VALUE;
+    protected final String ANSI_RED = "\u001B[31m";
+    protected final String ANSI_RESET = "\u001B[0m";
+    protected final int VALUE;
     protected String type;
 
     Obstacles(int value) {
         this.VALUE = value;
     }
 
-    public int getValue() {
-        return VALUE;
-    }
+    public abstract void attempt(Sportsmen participate);
 }
