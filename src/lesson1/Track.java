@@ -1,19 +1,19 @@
 package lesson1;
 
-public class Track implements Obstacles{
+public class Track extends Obstacles {
 
-    private int range;
+    private final int RANGE;
 
     public Track(int range) {
-        this.range = range;
+        this.RANGE = range;
     }
 
-    public int getRange() {
-        return range;
+    public int getRANGE() {
+        return RANGE;
     }
 
     @Override
     public int getValue() {
-        return getRange();
+        return getRANGE();
     }
 }

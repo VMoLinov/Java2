@@ -10,5 +10,5 @@ public interface Actionable {
 
     int getMAX_RUN();
 
-    void setAction(boolean b);
+    void setAction(boolean action);
 }

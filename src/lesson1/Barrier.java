@@ -1,19 +1,19 @@
 package lesson1;
 
-public class Barrier implements Obstacles{
+public class Barrier extends Obstacles {
 
-    private int height;
+    private final int HEIGHT;
 
     public Barrier(int height) {
-        this.height = height;
+        this.HEIGHT = height;
     }
 
-    public int getHeight() {
-        return height;
+    public int getHEIGHT() {
+        return HEIGHT;
     }
 
     @Override
     public int getValue() {
-        return getHeight();
+        return getHEIGHT();
     }
 }

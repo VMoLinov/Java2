@@ -1,6 +1,6 @@
 package lesson1;
 
-public interface Obstacles {
+public abstract class Obstacles {
 
-    int getValue();
+    public abstract int getValue();
 }

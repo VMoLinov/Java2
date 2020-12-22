@@ -19,9 +19,9 @@ public class Main {
             }
         }
 
-        System.out.println("Финишировали:");
+        System.out.println("Преодолели все препятствия:");
         for (Actionable participant : participants) {
-            if (participant.isAction()) System.out.println(participant.toString());
+            if (participant.isAction()) System.out.println(participant.toString()); //Почему toString доступен, при его отсутствии в интерфейсе?
         }
     }
 
@@ -48,7 +48,7 @@ public class Main {
         return new Obstacles[]{barrier1, track1, barrier2, track2, barrier3, track3};
     }
 
-    public static void jump(Actionable participant,int height) {
+    public static void jump(Actionable participant, int height) {
         if (participant.isAction()) {
             if (height <= participant.getMAX_JUMP()) {
                 System.out.printf("%s перепрыгнул %d сантиметров%n", participant.getNAME(), height);

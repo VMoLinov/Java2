@@ -16,22 +16,27 @@ public class Human implements Actionable {
         action = true;
     }
 
+    @Override
     public boolean isAction() {
         return action;
     }
 
+    @Override
     public String getNAME() {
         return NAME;
     }
 
+    @Override
     public int getMAX_JUMP() {
         return MAX_JUMP;
     }
 
+    @Override
     public int getMAX_RUN() {
         return MAX_RUN;
     }
 
+    @Override
     public void setAction(boolean action) {
         this.action = action;
     }
