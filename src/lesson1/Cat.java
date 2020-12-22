@@ -1,6 +1,6 @@
 package lesson1;
 
-public class Human implements Action {
+public class Cat implements Action {
 
     private final String NAME;
     private final int AGE;
@@ -8,7 +8,7 @@ public class Human implements Action {
     private final int MAX_RUN;
     private boolean action;
 
-    public Human(String name, int age, int maxJump, int maxRun) {
+    public Cat(String name, int age, int maxJump, int maxRun) {
         this.NAME = name;
         this.AGE = age;
         this.MAX_JUMP = maxJump;
@@ -42,7 +42,7 @@ public class Human implements Action {
 
     @Override
     public String toString() {
-        return "Human{" +
+        return "Cat{" +
                 "name='" + NAME + '\'' +
                 ", age=" + AGE +
                 ", maxJump=" + MAX_JUMP +

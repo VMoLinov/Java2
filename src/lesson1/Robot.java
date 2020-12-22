@@ -1,16 +1,14 @@
 package lesson1;
 
-public class Human implements Action {
+public class Robot implements Action {
 
     private final String NAME;
-    private final int AGE;
     private final int MAX_JUMP;
     private final int MAX_RUN;
     private boolean action;
 
-    public Human(String name, int age, int maxJump, int maxRun) {
+    public Robot(String name, int maxJump, int maxRun) {
         this.NAME = name;
-        this.AGE = age;
         this.MAX_JUMP = maxJump;
         this.MAX_RUN = maxRun;
         action = true;
@@ -42,9 +40,8 @@ public class Human implements Action {
 
     @Override
     public String toString() {
-        return "Human{" +
+        return "Robot{" +
                 "name='" + NAME + '\'' +
-                ", age=" + AGE +
                 ", maxJump=" + MAX_JUMP +
                 ", maxRun=" + MAX_RUN +
                 '}';

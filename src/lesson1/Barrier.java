@@ -1,6 +1,6 @@
 package lesson1;
 
-public class Barrier {
+public class Barrier implements Obstacles{
 
     private int height;
 
@@ -10,5 +10,10 @@ public class Barrier {
 
     public int getHeight() {
         return height;
+    }
+
+    @Override
+    public int getValue() {
+        return getHeight();
     }
 }
