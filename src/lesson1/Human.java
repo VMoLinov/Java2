@@ -1,6 +1,6 @@
 package lesson1;
 
-public class Human implements Action {
+public class Human implements Actionable {
 
     private final String NAME;
     private final int AGE;
@@ -16,28 +16,24 @@ public class Human implements Action {
         action = true;
     }
 
-    @Override
-    public void run(int range) {
-        if (action) {
-            if (range <= MAX_RUN) {
-                System.out.printf("%s пробежал %d метров%n", NAME, range);
-            } else {
-                System.out.printf("%s не пробежал %d метров и сходит с дистанции%n", NAME, range);
-                action = false;
-            }
-        }
+    public boolean isAction() {
+        return action;
     }
 
-    @Override
-    public void jump(int height) {
-        if (action) {
-            if (height <= MAX_JUMP) {
-                System.out.printf("%s перепрыгнул %d сантиметров%n", NAME, height);
-            } else {
-                System.out.printf("%s не преодолел препятствие и сходит с дистанции%n", NAME);
-                action = false;
-            }
-        }
+    public String getNAME() {
+        return NAME;
+    }
+
+    public int getMAX_JUMP() {
+        return MAX_JUMP;
+    }
+
+    public int getMAX_RUN() {
+        return MAX_RUN;
+    }
+
+    public void setAction(boolean action) {
+        this.action = action;
     }
 
     @Override
