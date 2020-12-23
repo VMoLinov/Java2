@@ -9,7 +9,9 @@ public class Main {
 
         for (Obstacles obstacle : obstacles) {
             for (Sportsmen participant : participants) {
-                obstacle.attempt(participant);
+                if (participant.isAction()) {
+                    obstacle.attempt(participant);
+                }
             }
         }
 
