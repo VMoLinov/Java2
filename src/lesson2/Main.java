@@ -2,22 +2,18 @@ package lesson2;
 
 public class Main {
 
-    static String[][] array = new String[2][4];
+    private static int i;
 
     public static void main(String[] args) {
+        Array array = new Array();
         try {
-            checkArray(array);
-        } catch (MyArraySizeException e) {
+            array.checkSize(array.arrayString);
+            i = array.parseArray(array.arrayString);
+        } catch (MyArraySizeException | MyArrayDataException e) {
             e.printStackTrace();
+        } finally {
+            System.out.println("Сумма элементов массива " + i);
         }
 
-    }
-
-    private static void checkArray(String[][] array) throws MyArraySizeException {
-        for (String[] item : array) {
-            if (item.length != 4 || array.length != 4) {
-                throw new MyArraySizeException();
-            }
-        }
     }
 }
