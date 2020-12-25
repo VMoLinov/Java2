@@ -6,4 +6,3 @@ public class MyArraySizeException extends Exception {
         System.out.println("Неверные измерения массива");
     }
 }
-
