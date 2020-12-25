@@ -13,7 +13,7 @@ public class Main {
         Array array = new Array();
         try {
             array.checkSize(array.arrayString);
-            int count = array.parseArray(array.arrayString);
+            int count = array.parseArray(array.arrayString, 0, 0);
             System.out.println("Сумма элементов массива " + count);
         } catch (MyArraySizeException | MyArrayDataException e) {
             e.printStackTrace();
