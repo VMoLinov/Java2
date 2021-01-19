@@ -1,8 +1,6 @@
 package lesson5;
 
-import java.util.concurrent.RunnableScheduledFuture;
-
-public class Main {
+public class Ver2 {
 
     static final int SIZE = 10000000;
     static final int HALF = SIZE / 2;
@@ -39,28 +37,25 @@ public class Main {
         System.arraycopy(arr, 0, a1, 0, HALF);
         System.arraycopy(arr, HALF, a2, 0, HALF);
 
-        class ChildThread1 implements Runnable {
+        class Child extends Thread {
+
+            final float[] arr;
+
+            private Child(float[] arr) {
+                this.arr = arr;
+            }
+
             @Override
             public void run() {
-                for (int i = 0; i < a1.length; i++) {
-                    a1[i] = (float) (a1[i] * Math.sin(0.2 + i / 5) * Math.cos(0.2 + i / 5) *
+                for (int i = 0; i < arr.length; i++) {
+                    arr[i] = (float) (arr[i] * Math.sin(0.2 + i / 5) * Math.cos(0.2 + i / 5) *
                             Math.cos(0.4 + i / 2));
                 }
             }
         }
 
-        class ChildThread2 implements Runnable {
-            @Override
-            public void run() {
-                for (int i = 0; i < a2.length; i++) {
-                    a2[i] = (float) (a2[i] * Math.sin(0.2 + i / 5) * Math.cos(0.2 + i / 5) *
-                            Math.cos(0.4 + i / 2));
-                }
-            }
-        }
-
-        Thread child1 = new Thread(new ChildThread1());
-        Thread child2 = new Thread(new ChildThread2());
+        Thread child1 = new Thread(new Child(a1));
+        Thread child2 = new Thread(new Child(a2));
         child1.start();
         child2.start();
 
