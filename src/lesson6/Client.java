@@ -19,11 +19,11 @@ public class Client {
                 while (!socket.isClosed()) {
                     try {
                         inputMessage = in.readUTF();
-                        System.out.println(inputMessage);
                         if ("\\close".equals(inputMessage)) {
                             System.out.println("Server closed connection");
                             System.exit(0);
                         }
+                        System.out.println(inputMessage);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
