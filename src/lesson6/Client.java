@@ -22,8 +22,7 @@ public class Client {
                         System.out.println(inputMessage);
                         if ("\\close".equals(inputMessage)) {
                             System.out.println("Server closed connection");
-                            socket.close();
-                            break;
+                            System.exit(0);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -42,8 +41,7 @@ public class Client {
                         out.flush();
                         if ("\\close".equals(outputMessage)) {
                             System.out.println("Connection closed");
-                            socket.close();
-                            break;
+                            System.exit(0);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
