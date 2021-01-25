@@ -21,7 +21,7 @@ public class Controller {
     void pressButton() {
         String message = input.getText();
         input.clear();
-        if (!message.isBlank()) {
+        if (!message.isEmpty()) {
             chat.setText(chat.getText() + "user: " + message + "\n");
             chat.setScrollTop(Double.MAX_VALUE);
         }
