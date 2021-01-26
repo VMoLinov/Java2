@@ -1,7 +1,5 @@
 package server;
 
-import com.sun.security.ntlm.Client;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,12 +20,14 @@ public class MyServer {
                 System.out.println("Waiting connection");
                 Socket socket = serverSocket.accept();
                 System.out.println("Client connected");
-                clients.add(new ClientHandler(this, socket));
+                new ClientHandler(this, socket);
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            authService.stop();
+            if (authService != null) {
+                authService.stop();
+            }
         }
     }
 
@@ -35,5 +35,26 @@ public class MyServer {
         for (ClientHandler client : clients) {
             client.sendMessage(message);
         }
+    }
+
+    public synchronized boolean isNickBusy(String nick) {
+        for (ClientHandler client : clients) {
+            if (nick.equals(client.getNick())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public AuthService getAuthService() {
+        return authService;
+    }
+
+    public synchronized void subscribe(ClientHandler clientHandler) {
+        clients.add(clientHandler);
+    }
+
+    public synchronized void unSubscribe(ClientHandler clientHandler) {
+        clients.remove(clientHandler);
     }
 }

@@ -13,6 +13,7 @@ public class ClientHandler {
     private MyServer myServer;
     private DataInputStream dataInputStream;
     private DataOutputStream dataOutputStream;
+    private String nick;
 
     public ClientHandler(MyServer myServer, Socket socket) {
         try {
@@ -26,8 +27,24 @@ public class ClientHandler {
                     readMessage();
                 } catch (IOException e) {
                     e.printStackTrace();
+                } finally {
+                    closeConnection();
                 }
             }).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void closeConnection() {
+        myServer.unSubscribe(this);
+        Message message = new Message();
+        message.setMessage(nick + " exit from net");
+        myServer.broadcastMessage(message);
+        try {
+            dataOutputStream.close();
+            dataInputStream.close();
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,11 +53,17 @@ public class ClientHandler {
     private void authentication() {
         while (true) {
             try {
-                Message message = new Gson().fromJson(dataInputStream.readUTF(), Message.class)
-                if (!message.getMessage().startsWith("/auth")) {
-                    continue;
+                AuthMessage message = new Gson().fromJson(dataInputStream.readUTF(), AuthMessage.class);
+                String nick = myServer.getAuthService().getNickByLoginAndPass(message.getLogin(), message.getPassword());
+                if (nick != null && !myServer.isNickBusy(nick)) {
+                    message.setAuthenticated(true);
+                    dataOutputStream.writeUTF(new Gson().toJson(message));
+                    Message broadcastMsg = new Message();
+                    broadcastMsg.setMessage(nick + " enter in chat");
+                    myServer.broadcastMessage(broadcastMsg);
+                    myServer.subscribe(this);
+                    this.nick = nick;
                 }
-                String[] parts = message.getMessage().split("\\s");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -50,6 +73,11 @@ public class ClientHandler {
     private void readMessage() throws IOException {
         while (true) {
             Message message = new Gson().fromJson(dataInputStream.readUTF(), Message.class);
+            message.setNick(nick);
+            System.out.println(message);
+            if ("/end".equals(message.getMessage())) {
+                return;
+            }
             myServer.broadcastMessage(message);
         }
     }
@@ -60,5 +88,9 @@ public class ClientHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getNick() {
+        return nick;
     }
 }
