@@ -3,8 +3,7 @@ package client.controllers;
 import client.NetworkClient;
 import client.models.Network;
 import javafx.fxml.FXML;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 
 public class AuthController {
@@ -15,7 +14,7 @@ public class AuthController {
     public PasswordField passwordField;
 
     private Network network;
-    private NetworkClient networkCliet;
+    private NetworkClient networkClient;
 
 
     @FXML
@@ -32,7 +31,7 @@ public class AuthController {
         if (authErrorMessage != null) {
             NetworkClient.showErrorMessage("Ошибка авторизации", "Что-то не то", authErrorMessage);
         } else {
-            networkCliet.openMainChatWindow();
+            networkClient.openMainChatWindow();
         }
 
     }
@@ -42,6 +41,6 @@ public class AuthController {
     }
 
     public void setNetworkClient(NetworkClient networkCliet) {
-        this.networkCliet = networkCliet;
+        this.networkClient = networkCliet;
     }
 }

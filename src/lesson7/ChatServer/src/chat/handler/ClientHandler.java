@@ -4,15 +4,9 @@ import chat.MyServer;
 import chat.auth.AuthService;
 import clientserver.Command;
 import clientserver.CommandType;
-import clientserver.commands.AuthCommandData;
-import clientserver.commands.PrivateMessageCommandData;
-import clientserver.commands.PublicMessageCommandData;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import clientserver.commands.*;
+import java.io.*;
 import java.net.Socket;
-import java.util.Timer;
 
 public class ClientHandler {
 
@@ -31,7 +25,6 @@ public class ClientHandler {
         in = new ObjectInputStream(clientSocket.getInputStream());
         out = new ObjectOutputStream(clientSocket.getOutputStream());
 
-//        new Timer().schedule();
         new Thread(() -> {
             try {
                 authentication();
@@ -39,15 +32,11 @@ public class ClientHandler {
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
-
         }).start();
-
     }
 
     private void authentication() throws IOException {
-
         while (true) {
-
             Command command = readCommand();
             if (command == null) {
                 continue;
@@ -58,20 +47,16 @@ public class ClientHandler {
                 if (isSuccessAuth) {
                     break;
                 }
-
             } else {
                 sendMessage(Command.authErrorCommand("Ошибка авторизации"));
-
             }
         }
-
     }
 
     private boolean processAuthCommand(Command command) throws IOException {
         AuthCommandData cmdData = (AuthCommandData) command.getData();
         String login = cmdData.getLogin();
         String password = cmdData.getPassword();
-
         AuthService authService = myServer.getAuthService();
         this.username = authService.getUsernameByLoginAndPassword(login, password);
         if (username != null) {
@@ -79,7 +64,6 @@ public class ClientHandler {
                 sendMessage(Command.authErrorCommand("Логин уже используется"));
                 return false;
             }
-
             sendMessage(Command.authOkCommand(username));
             String message = String.format(">>> %s присоединился к чату", username);
             myServer.broadcastMessage(this, Command.messageInfoCommand(message, null));
@@ -108,7 +92,6 @@ public class ClientHandler {
             if (command == null) {
                 continue;
             }
-
             switch (command.getType()) {
                 case END:
                     myServer.unSubscribe(this);

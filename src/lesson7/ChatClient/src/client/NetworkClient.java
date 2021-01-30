@@ -13,7 +13,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
 
 
 public class NetworkClient extends Application {
@@ -25,15 +24,12 @@ public class NetworkClient extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         this.primaryStage = primaryStage;
-
         network = new Network();
         if (!network.connect()) {
             showErrorMessage("Проблемы с соединением", "", "Ошибка подключения к серверу");
             return;
         }
-
         openAuthWindow();
         createMainChatWindow();
     }
@@ -43,33 +39,25 @@ public class NetworkClient extends Application {
         loader.setLocation(NetworkClient.class.getResource("views/auth-view.fxml"));
         Parent root = loader.load();
         authStage = new Stage();
-
         authStage.setTitle("Авторизация");
         authStage.initModality(Modality.WINDOW_MODAL);
         authStage.initOwner(primaryStage);
         Scene scene = new Scene(root);
         authStage.setScene(scene);
         authStage.show();
-
         AuthController authController = loader.getController();
         authController.setNetwork(network);
         authController.setNetworkClient(this);
-
-
     }
 
     public void createMainChatWindow() throws java.io.IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(NetworkClient.class.getResource("views/chat-view.fxml"));
-
         Parent root = loader.load();
-
         primaryStage.setTitle("Messenger");
         primaryStage.setScene(new Scene(root, 600, 400));
-
         chatController = loader.getController();
         chatController.setNetwork(network);
-
         primaryStage.setOnCloseRequest(windowEvent -> network.close());
     }
 
@@ -94,5 +82,4 @@ public class NetworkClient extends Application {
         chatController.setLabel(network.getUsername());
         network.waitMessage(chatController);
     }
-
 }

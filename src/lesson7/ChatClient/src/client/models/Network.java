@@ -5,10 +5,7 @@ import client.controllers.ChatController;
 import clientserver.Command;
 import clientserver.commands.*;
 import javafx.application.Platform;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class Network {
@@ -49,13 +46,11 @@ public class Network {
             dataOutputStream = new ObjectOutputStream(socket.getOutputStream());
             dataInputStream = new ObjectInputStream(socket.getInputStream());
             return true;
-
         } catch (IOException e) {
             System.out.println("Соединение не было установлено!");
             e.printStackTrace();
             return false;
         }
-
     }
 
     public void close() {
@@ -67,16 +62,13 @@ public class Network {
     }
 
     public void waitMessage(ChatController chatController) {
-
        Thread thread = new Thread( () -> {
            try { while (true) {
-
                Command command = readCommand();
                if(command == null) {
                    NetworkClient.showErrorMessage("Error","Ошибка серверва", "Получена неверная команда");
                    continue;
                }
-
                switch (command.getType()) {
                    case INFO_MESSAGE: {
                        MessageInfoCommandData data = (MessageInfoCommandData) command.getData();
@@ -106,7 +98,6 @@ public class Network {
                            NetworkClient.showErrorMessage("Error","Unknown command from server!", command.getType().toString());
                        });
                }
-
            }
            } catch (IOException e) {
                e.printStackTrace();
@@ -117,24 +108,20 @@ public class Network {
         thread.start();
     }
 
-
     public String sendAuthCommand(String login, String password) {
         try {
             Command authCommand = Command.authCommand(login, password);
             dataOutputStream.writeObject(authCommand);
-
             Command command = readCommand();
             if (command == null) {
                 return "Ошибка чтения команды с сервера";
             }
-
             switch (command.getType()) {
                 case AUTH_OK: {
                     AuthOkCommandData data = (AuthOkCommandData) command.getData();
                     this.username = data.getUsername();
                     return null;
                 }
-
                 case AUTH_ERROR:
                 case ERROR: {
                     AuthErrorCommandData data = (AuthErrorCommandData) command.getData();
@@ -142,7 +129,6 @@ public class Network {
                 }
                 default:
                     return "Unknown type of command: " + command.getType();
-
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -161,8 +147,6 @@ public class Network {
     public void sendMessage(Command command) throws IOException {
         dataOutputStream.writeObject(command);
     }
-
-
 
     public void sendPrivateMessage(String message, String recipient) throws IOException {
         Command command = Command.privateMessageCommand(recipient, message);

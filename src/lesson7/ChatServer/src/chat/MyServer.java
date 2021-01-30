@@ -22,10 +22,8 @@ public class MyServer {
         this.authService = new BaseAuthService();
     }
 
-
     public void start() throws IOException {
         System.out.println("Сервер запущен!");
-
         try {
             while (true) {
                 waitAndProcessNewClientConnection();
@@ -41,7 +39,6 @@ public class MyServer {
     private void waitAndProcessNewClientConnection() throws IOException {
         System.out.println("Ожидание пользователя...");
         Socket clientSocket = serverSocket.accept();
-//        clientSocket.setSoTimeout(120000);
         System.out.println("Клиент подключился!");
         processClientConnection(clientSocket);
     }
@@ -90,7 +87,6 @@ public class MyServer {
                 continue;
             }
           client.sendMessage(command);
-
         }
     }
 
