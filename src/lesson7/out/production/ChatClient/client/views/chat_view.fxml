@@ -9,8 +9,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ViewController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.ChatController">
     <children>
         <SplitPane dividerPositions="0.5" prefHeight="400.0" prefWidth="600.0">
             <items>
@@ -19,7 +19,8 @@
                     <children>
                         <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="339.0" prefWidth="442.0">
                             <items>
-                                <Label prefHeight="70.0" prefWidth="92.0" text="Чат" textAlignment="CENTER">
+                                <Label fx:id="userName" prefHeight="70.0" prefWidth="92.0" text="Чат"
+                                       textAlignment="CENTER">
                                     <font>
                                         <Font name="System Bold" size="35.0"/>
                                     </font>
