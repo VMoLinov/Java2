@@ -3,10 +3,9 @@ package client;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
-import java.io.*;
-import java.net.Socket;
 import java.util.List;
 
 public class EchoClient extends Application {
@@ -19,20 +18,29 @@ public class EchoClient extends Application {
         loader.setLocation(EchoClient.class.getResource("view.fxml"));
         Parent root = loader.load();
 
-        Socket socket = new Socket("localhost", 8189);
-        DataInputStream in = new DataInputStream(socket.getInputStream());
-        DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-
         primaryStage.setTitle("Messenger");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
         Network network = new Network();
         if (!network.connect()) {
-            System.out.println("Ошибка подключения к серверу");
+            showErrorMessage("Проблемы с соединением", "", "Ошибка подключения к серверу");
         }
 
+        ViewController viewController = loader.getController();
+        viewController.setNetwork(network);
 
+        network.waitMessage(viewController);
+
+        primaryStage.setOnCloseRequest(windowEvent -> network.close());
+    }
+
+    public static void showErrorMessage(String title, String message, String errorMessage) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(message);
+        alert.setContentText(errorMessage);
+        alert.showAndWait();
     }
 
     public static void main(String[] args) {

@@ -18,11 +18,10 @@ public class EchoServer {
             DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
             while (true) {
                 String message = in.readUTF();
-                System.out.println("Сообщение пользователя: " + message);
                 if ("/exit".equals(message)) {
                     break;
                 }
-                out.writeUTF("Ответ от сервера: " + message.toUpperCase());
+                out.writeUTF(message.toUpperCase());
             }
             System.out.println("Сервер остановлен");
         } catch (IOException e) {

@@ -5,21 +5,28 @@ import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.io.IOException;
+
 
 public class ViewController {
 
     @FXML
-    ListView userList;
+    private ListView<String> userList;
 
     @FXML
-    TextArea chatHistory;
+    private TextArea chatHistory;
 
     @FXML
-    TextField textField;
+    private TextField textField;
 
     @FXML
-    Button sendButton;
+    private Button sendButton;
 
+    private Network network;
+
+    public void setNetwork(Network network) {
+        this.network = network;
+    }
 
     @FXML
     public void initialize() {
@@ -40,11 +47,18 @@ public class ViewController {
 
     private void sendMessage() {
         String message = textField.getText();
-        appendMessage(message);
+//        appendMessage(message);
         textField.clear();
+
+        try {
+            network.getOut().writeUTF(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+            EchoClient.showErrorMessage("Ошибка подключения", "Ошибка отправки сообщения", e.getMessage());
+        }
     }
 
-    private void appendMessage(String message) {
+    public void appendMessage(String message) {
         chatHistory.appendText(message);
         chatHistory.appendText(System.lineSeparator());
     }
