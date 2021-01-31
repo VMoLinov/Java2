@@ -44,7 +44,7 @@ public class NetworkClient extends Application {
         authController.setNetworkClient(this);
     }
 
-    public void createMainChatWindow() throws java.io.IOException {
+    public void createMainChatWindow() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(NetworkClient.class.getResource("views/chat-view.fxml"));
         Parent root = loader.load();
@@ -52,7 +52,7 @@ public class NetworkClient extends Application {
         primaryStage.setScene(new Scene(root, 600, 400));
         chatController = loader.getController();
         chatController.setNetwork(network);
-        primaryStage.setOnCloseRequest(windowEvent -> network.close());
+        primaryStage.setOnCloseRequest(windowEvent -> network.sendCloseCommand());
     }
 
     public static void showErrorMessage(String title, String message, String errorMessage) {

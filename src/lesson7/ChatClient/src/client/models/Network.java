@@ -19,6 +19,7 @@ public class Network {
     private ObjectInputStream dataInputStream;
     private Socket socket;
     private String username;
+    private Thread thread;
 
     public Network() {
         this(SERVER_ADRESS, SERVER_PORT);
@@ -44,6 +45,7 @@ public class Network {
 
     public void close() {
         try {
+            thread.interrupt();
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,9 +53,9 @@ public class Network {
     }
 
     public void waitMessage(ChatController chatController) {
-        Thread thread = new Thread(() -> {
+        thread = new Thread(() -> {
             try {
-                while (true) {
+                while (!thread.isInterrupted()) {
                     Command command = readCommand();
                     if (command == null) {
                         NetworkClient.showErrorMessage("Error", "Ошибка серверва", "Получена неверная команда");
@@ -144,14 +146,26 @@ public class Network {
     }
 
     private Command readCommand() throws IOException {
+            try {
+                return (Command) dataInputStream.readObject();
+            } catch (ClassNotFoundException e) {
+                String errorMessage = "Получен неизвестный объект";
+                System.err.println(errorMessage);
+                e.printStackTrace();
+                sendMessage(Command.errorCommand(errorMessage));
+                return null;
+            }
+    }
+
+    public void sendCloseCommand() {
+        Command command = Command.endCommand(username);
         try {
-            return (Command) dataInputStream.readObject();
-        } catch (ClassNotFoundException e) {
-            String errorMessage = "Получен неизвестный объект";
-            System.err.println(errorMessage);
+            sendMessage(command);
+        } catch (IOException e) {
             e.printStackTrace();
-            sendMessage(Command.errorCommand(errorMessage));
-            return null;
+        } finally {
+            Platform.runLater(this::close);
+            System.exit(2);
         }
     }
 }

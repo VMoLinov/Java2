@@ -2,8 +2,6 @@ package client.controllers;
 
 import client.NetworkClient;
 import client.models.Network;
-import clientserver.commands.UpdateUsersListCommandData;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -68,9 +66,12 @@ public class ChatController {
         if (message.isBlank()) {
             return;
         }
-        appendMessage("Я: " + message);
         textField.clear();
         try {
+            if ("/end".equals(message)) {
+                network.sendCloseCommand();
+            }
+            appendMessage("Я: " + message);
             if (selectedRecipient != null) {
                 network.sendPrivateMessage(message, selectedRecipient);
             } else {
@@ -94,5 +95,4 @@ public class ChatController {
     public void updateUsers(List<String> users) {
         usersList.setItems(FXCollections.observableArrayList(users));
     }
-
 }

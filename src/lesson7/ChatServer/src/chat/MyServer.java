@@ -3,7 +3,6 @@ package chat;
 import chat.auth.*;
 import chat.handler.ClientHandler;
 import clientserver.Command;
-
 import java.io.IOException;
 import java.net.*;
 import java.util.*;

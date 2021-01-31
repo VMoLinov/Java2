@@ -74,9 +74,10 @@ public class Command implements Serializable {
         return command;
     }
 
-    public static Command endCommand() {
+    public static Command endCommand(String username) {
         Command command = new Command();
         command.type = CommandType.END;
+        command.data = new EndCommandData(username);
         return command;
     }
 }

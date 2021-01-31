@@ -2,11 +2,15 @@ package chat.handler;
 
 import chat.MyServer;
 import chat.auth.AuthService;
+import chat.auth.BaseAuthService;
 import clientserver.Command;
 import clientserver.CommandType;
 import clientserver.commands.*;
+
 import java.io.*;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ClientHandler {
 
@@ -15,6 +19,7 @@ public class ClientHandler {
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private String username;
+    private long delay = 120000L;
 
     public ClientHandler(MyServer myServer, Socket clientSocket) {
         this.myServer = myServer;
@@ -24,7 +29,20 @@ public class ClientHandler {
     public void handle() throws IOException {
         in = new ObjectInputStream(clientSocket.getInputStream());
         out = new ObjectOutputStream(clientSocket.getOutputStream());
-
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                if (username == null) {
+                    try {
+                        System.out.println("Превышено время ожидания. Соединение разорвано");
+                        clientSocket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        new Timer().schedule(timerTask, delay);
         new Thread(() -> {
             try {
                 authentication();
@@ -42,7 +60,6 @@ public class ClientHandler {
                 continue;
             }
             if (command.getType() == CommandType.AUTH) {
-
                 boolean isSuccessAuth = processAuthCommand(command);
                 if (isSuccessAuth) {
                     break;
@@ -93,9 +110,14 @@ public class ClientHandler {
                 continue;
             }
             switch (command.getType()) {
-                case END:
+                case END: {
+                    EndCommandData data = (EndCommandData) command.getData();
+                    String message = String.format(">>> %s вышел из чата", data.getUsername());
+                    myServer.broadcastMessage(this, Command.messageInfoCommand(message, null));
                     myServer.unSubscribe(this);
-                    return;
+                    clientSocket.close();
+                    break;
+                }
                 case PUBLIC_MESSAGE: {
                     PublicMessageCommandData data = (PublicMessageCommandData) command.getData();
                     String message = data.getMessage();
