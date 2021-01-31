@@ -2,11 +2,12 @@ package client.controllers;
 
 import client.NetworkClient;
 import client.models.Network;
+import clientserver.commands.UpdateUsersListCommandData;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.*;
@@ -46,7 +47,7 @@ public class ChatController {
             cell.textProperty().bind(cell.itemProperty());
             cell.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
                 usersList.requestFocus();
-                if (! cell.isEmpty()) {
+                if (!cell.isEmpty()) {
                     int index = cell.getIndex();
                     if (selectionModel.getSelectedIndices().contains(index)) {
                         selectionModel.clearSelection(index);
@@ -58,13 +59,13 @@ public class ChatController {
                     event.consume();
                 }
             });
-            return cell ;
+            return cell;
         });
     }
 
     private void sendMessage() {
         String message = textField.getText();
-        if(message.isBlank()) {
+        if (message.isBlank()) {
             return;
         }
         appendMessage("Я: " + message);
@@ -72,8 +73,7 @@ public class ChatController {
         try {
             if (selectedRecipient != null) {
                 network.sendPrivateMessage(message, selectedRecipient);
-            }
-            else {
+            } else {
                 network.sendMessage(message);
             }
         } catch (IOException e) {
@@ -91,11 +91,8 @@ public class ChatController {
         chatHistory.appendText(System.lineSeparator());
     }
 
-    public void setUsernameTitle(String username) {
-
-    }
-
     public void updateUsers(List<String> users) {
         usersList.setItems(FXCollections.observableArrayList(users));
     }
+
 }

@@ -1,15 +1,12 @@
 package chat;
 
-import chat.auth.AuthService;
-import chat.auth.BaseAuthService;
+import chat.auth.*;
 import chat.handler.ClientHandler;
 import clientserver.Command;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.*;
+import java.util.*;
 
 public class MyServer {
 
@@ -55,7 +52,7 @@ public class MyServer {
     public synchronized boolean isUsernameBusy(String clientUsername) {
         for (ClientHandler client : clients) {
             if (client.getUsername().equals(clientUsername)) {
-               return true;
+                return true;
             }
         }
         return false;
@@ -86,7 +83,7 @@ public class MyServer {
             if (client == sender) {
                 continue;
             }
-          client.sendMessage(command);
+            client.sendMessage(command);
         }
     }
 

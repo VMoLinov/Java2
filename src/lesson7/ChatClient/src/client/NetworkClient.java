@@ -1,19 +1,13 @@
 package client;
 
-
-import client.controllers.AuthController;
-import client.controllers.ChatController;
+import client.controllers.*;
 import client.models.Network;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.*;
 import javafx.scene.control.Alert;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
+import javafx.stage.*;
 import java.io.IOException;
-
 
 public class NetworkClient extends Application {
 
@@ -69,17 +63,15 @@ public class NetworkClient extends Application {
         alert.showAndWait();
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     public void openMainChatWindow() {
         authStage.close();
-        primaryStage.show();
-
-        primaryStage.setTitle(network.getUsername());
-        primaryStage.setAlwaysOnTop(true);
         chatController.setLabel(network.getUsername());
+        primaryStage.show();
+        primaryStage.setAlwaysOnTop(true);
         network.waitMessage(chatController);
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

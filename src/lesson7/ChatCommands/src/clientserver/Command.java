@@ -25,7 +25,6 @@ public class Command implements Serializable {
         return command;
     }
 
-
     public static Command authOkCommand(String username) {
         Command command = new Command();
         command.type = CommandType.AUTH_OK;
@@ -39,6 +38,7 @@ public class Command implements Serializable {
         command.data = new AuthErrorCommandData(authErrorMessage);
         return command;
     }
+
     public static Command errorCommand(String errorMessage) {
         Command command = new Command();
         command.type = CommandType.ERROR;

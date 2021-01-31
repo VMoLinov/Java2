@@ -20,7 +20,7 @@ public class BaseAuthService implements AuthService {
     @Override
     public String getUsernameByLoginAndPassword(String login, String password) {
         for (User client : clients) {
-            if(client.getLogin().equals(login) && client.getPassword().equals(password)) {
+            if (client.getLogin().equals(login) && client.getPassword().equals(password)) {
                 return client.getUsername();
             }
         }
